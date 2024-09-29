@@ -1,10 +1,9 @@
 package jgui.controls;
 
-import jgui.ColorRGBA;
-import jgui.Control;
-import jgui.EventArguments;
-import jgui.RenderProvider;
-import jgui.IEvent;
+import jgui.render.ColorRGBA;
+import jgui.event.EventArguments;
+import jgui.render.RenderProvider.ShapeType;
+import jgui.event.IEvent;
 
 public class Slider<T> extends Canvas {
     protected Button handle;
@@ -13,7 +12,7 @@ public class Slider<T> extends Canvas {
     protected T floor, ceil, value;
 
     public Slider(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, String texture, IEvent renderEvent, Button handle, T floor, T initial, T ceil, boolean vertical) {
-        super(id, x, y, z, width, height, borderColor, bodyColor, RenderProvider.ShapeType.QUAD, texture, renderEvent);
+        super(id, x, y, z, width, height, borderColor, bodyColor, ShapeType.QUAD, texture, renderEvent);
 
         if (handle != null) {
             addChild(handle);

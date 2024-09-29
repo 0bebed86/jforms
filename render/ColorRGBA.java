@@ -1,4 +1,4 @@
-package jgui;
+package jgui.render;
 
 public class ColorRGBA {
 

@@ -1,14 +1,10 @@
-package jgui.render;
+package jgui.render.providers;
 
-import java.util.Stack;
 import jgui.FontInfo;
-import jgui.RenderProvider;
+import jgui.render.MouseCursor;
+import jgui.render.RenderProvider;
 
 public class ProviderOpenGL extends RenderProvider {
-    protected final Stack<Integer> colorStack = new Stack<>();
-    protected final Stack<String> textureStack = new Stack<>();
-    protected final Stack<Float> rotationStack = new Stack<>();
-    protected final Stack<ShapeType> shapeTypeStack = new Stack<>();
 
     protected ProviderOpenGL(FontInfo defaultFont) {
         super(defaultFont);
@@ -19,42 +15,32 @@ public class ProviderOpenGL extends RenderProvider {
     }
 
     @Override
-    public boolean pushColor(int color){
+    protected boolean applyFont(FontInfo font){
         return false; //todo
     }
 
     @Override
-    public boolean popColor(){
+    protected boolean applyCursor(MouseCursor cusros){
         return false; //todo
     }
 
     @Override
-    public boolean pushTexture(String id){
+    public boolean applyColor(int color){
         return false; //todo
     }
 
     @Override
-    public boolean popTexture(){
+    public boolean applyTexture(String id){
         return false; //todo
     }
 
     @Override
-    public boolean pushRotation(float angle) {
+    public boolean applyRotation(float angle) {
         return false; //todo
     }
 
     @Override
-    public boolean popRotation() {
-        return false; //todo
-    }
-
-    @Override
-    public boolean pushShapeType(ShapeType type) {
-        return false; //todo
-    }
-
-    @Override
-    public boolean popShapeType() {
+    public boolean applyShapeType(ShapeType type) {
         return false; //todo
     }
 

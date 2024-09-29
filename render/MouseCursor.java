@@ -1,11 +1,11 @@
-package jgui;
+package jgui.render;
 
 import java.util.ArrayList;
 
 public enum MouseCursor {
-    ARROW("cursor_arrow"),
+    ARROW(null),
     DEFAULT(ARROW.texture),
-    POINTER("cursor_pointer");
+    POINTER(null);
 
     public static interface ILoader {
         boolean load(MouseCursor cursor);
@@ -26,6 +26,14 @@ public enum MouseCursor {
         return loaded = loader.load(this);
     }
 
+    public String getTexture() {
+        return texture;
+    }
+
+    public void setTexture(String texture) {
+        this.texture = texture;
+    }
+
     public static MouseCursor[] loadAll(ILoader loader, boolean force) {
         ArrayList<MouseCursor> failed = new ArrayList<>();
         MouseCursor[] coming = MouseCursor.values();
@@ -38,4 +46,5 @@ public enum MouseCursor {
 
         return failed.isEmpty() ? null : (MouseCursor[]) failed.toArray();
     }
+
 }

@@ -1,4 +1,4 @@
-package jgui;
+package jgui.util;
 
 public enum TextAlignment {
     NONE(0.0f), LEFT(-1.0f), MIDDLE(-0.5f), RIGHT(1.0f);

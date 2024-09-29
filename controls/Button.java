@@ -1,16 +1,16 @@
 package jgui.controls;
 
 import java.util.List;
-import jgui.ColorRGBA;
-import jgui.IEvent;
-import jgui.RenderProvider;
+import jgui.render.ColorRGBA;
+import jgui.event.IEvent;
+import jgui.render.RenderProvider.ShapeType;
 
 public class Button extends Canvas {
 
     protected PlainText text;
     protected List<Icon> icons;
 
-    public Button(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, RenderProvider.ShapeType type, String texture, IEvent renderEvent, PlainText text, List<Icon> icons) {
+    public Button(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, String texture, IEvent renderEvent, PlainText text, List<Icon> icons) {
         super(id, x, y, z, width, height, borderColor, bodyColor, type, texture, renderEvent);
 
         if (text != null) {

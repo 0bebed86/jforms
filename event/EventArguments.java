@@ -1,4 +1,4 @@
-package jgui;
+package jgui.event;
 
 import java.time.Instant;
 

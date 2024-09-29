@@ -1,17 +1,17 @@
 package jgui.controls;
 
-import jgui.ColorRGBA;
-import jgui.Control;
-import jgui.EventArguments;
-import jgui.IEvent;
-import jgui.RenderProvider;
-import jgui.events.arguments.RenderEventArguments;
+import jgui.event.EventArguments;
+import jgui.event.IEvent;
+import jgui.event.arguments.RenderEventArguments;
+import jgui.render.ColorRGBA;
+import jgui.render.RenderProvider;
+import jgui.render.RenderProvider.ShapeType;
 
 public class Image extends Shape {
 
     protected String texture;
 
-    public Image(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, RenderProvider.ShapeType type, String texture) {
+    public Image(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, String texture) {
         super(id, x, y, z, width, height, borderColor, bodyColor, type);
 
         this.texture = texture;

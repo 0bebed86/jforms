@@ -1,7 +1,7 @@
-package jgui.events.arguments;
+package jgui.event.arguments;
 
-import jgui.EventArguments;
-import jgui.RenderProvider;
+import jgui.event.EventArguments;
+import jgui.render.RenderProvider;
 
 public class RenderEventArguments extends EventArguments {
 

@@ -1,4 +1,4 @@
-package jgui;
+package jgui.controls;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import jgui.events.arguments.RenderEventArguments;
+import jgui.event.EventArguments;
+import jgui.event.IEvent;
+import jgui.event.arguments.RenderEventArguments;
+import jgui.render.RenderProvider;
 
 public abstract class Control {
 
