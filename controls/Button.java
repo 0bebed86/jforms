@@ -1,28 +1,26 @@
 package jgui.controls;
 
-import java.util.ArrayList;
 import java.util.List;
+import jgui.ColorRGBA;
+import jgui.IEvent;
+import jgui.RenderProvider;
 
-public class Button extends Image {
+public class Button extends Canvas {
 
     protected PlainText text;
     protected List<Icon> icons;
 
-    public Button(String id, int x, int y, int width, int height, String texture, PlainText text, List<Icon> icons) {
-        super(id, texture, x, y, 0, width, height);
+    public Button(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, RenderProvider.ShapeType type, String texture, IEvent renderEvent, PlainText text, List<Icon> icons) {
+        super(id, x, y, z, width, height, borderColor, bodyColor, type, texture, renderEvent);
 
-        if (text != null || icons != null) {
-            super.childs = new ArrayList<>();
-
-            if (text != null) {
-                super.childs.add(text);
-            }
-
-            if (icons != null) {
-                super.childs.addAll(icons);
-            }
+        if (text != null) {
+            super.addChild(text);
         }
-        
+
+        if (icons != null) {
+            super.addChilds(icons);
+        }
+
         this.text = text;
         this.icons = icons;
     }
@@ -32,7 +30,7 @@ public class Button extends Image {
         PlainText buttonLabel = new PlainText("button_clickme_label", "Click me!", 5, 5, -1, -1, defaultFont);
         Button button = new Button("button_clickme", 150, 150, 150, 50, null, buttonLabel, null);
 
-        button.setEvent(IEvent.PresetIdentifier.MOUSE_CLICK, (s, e) -> {
+        button.setEventCallback(IEvent.PresetIdentifier.MOUSE_CLICK, (s, e) -> {
             Button element = (Button)s; //equals mymegacockbluster
             MouseEvent event = (MouseEvent)e;
 

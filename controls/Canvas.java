@@ -1,26 +1,40 @@
 package jgui.controls;
 
-import Control;
-import EventArguments;
-import IEvent;
+import jgui.ColorRGBA;
+import jgui.Control;
+import jgui.EventArguments;
+import jgui.IEvent;
+import jgui.RenderProvider;
+import jgui.events.arguments.RenderEventArguments;
 
 public class Canvas extends Image {
+    protected IEvent renderEvent;
+
     //todo: scrolls
 
-    public Canvas(String id, String texture, int x, int y, int z, int width, int height) {
-        super(id, texture, x, y, z, width, height);
+    public Canvas(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, RenderProvider.ShapeType type, String texture, IEvent renderEvent) {
+        super(id, x, y, z, width, height, borderColor, bodyColor, type, texture);
 
-        super.setEvent(IEvent.PresetIdentifier.RENDER, Canvas::defaultRenderEvent);
+        this.renderEvent = renderEvent;
+
+        setEventCallback(IEvent.PresetIdentifier.RENDER, Canvas::renderEvent);
     }
 
-    protected static boolean defaultRenderEvent(Object sender, EventArguments arguments) {
-        Canvas element = (Canvas) sender;
+    protected static boolean renderEvent(Control control, EventArguments arguments) {
+        if (!(control instanceof Canvas) || !(arguments instanceof RenderEventArguments)) {
+            return false;
+        }
 
-        Control.getRenderer().renderTexture(element.texture, element.x, element.y, element.z, element.width, element.height);
+        Image.renderEvent(control, arguments);
 
-        //same with:
-        //getRenderer().renderTexture(element.texture, element.x, element.y, element.z, element.width, element.height);
-        //RenderProvider.get().renderTexture(element.texture, element.x, element.y, element.z, element.width, element.height);
+        Canvas element = (Canvas) control;
+        RenderEventArguments context = (RenderEventArguments) arguments;
+        RenderProvider provider = context.getProvider();
+
+        if (element.renderEvent != null) {
+            element.renderEvent.invoke(control, arguments);
+        }
+
         return true;
     }
 }

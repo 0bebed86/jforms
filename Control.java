@@ -1,18 +1,21 @@
 package jgui;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import jgui.events.arguments.RenderEventArguments;
 
-public class Control {
+public abstract class Control {
 
     protected String id = null;
 
     //protected Cursor cursor = Cursor.DEFAULT; //todo idk how and idc dgf
-
     //protected Control owner = null;
     //protected Control parent = null;
-    protected List<Control> childs = null;
+    protected List<? extends Control> childs = null;
     protected Map<Object, Object> tags = null;
     protected Map<String, IEvent> events = null;
 
@@ -24,15 +27,14 @@ public class Control {
     protected int height = 0;
     protected int depth = 0;
 
+    protected boolean loaded = false;
+    protected boolean excluded = false;
     protected boolean visible = true;
     protected boolean active = false;
     protected boolean enabled = true;
 
     protected float opacity = 1.0f;
-
-    protected static RenderProvider getRenderer() {
-        return RenderProvider.get();
-    }
+    protected float rotation = 0.0f;
 
     protected Control(String id, int x, int y, int width, int height) {
         this.id = id;
@@ -42,19 +44,67 @@ public class Control {
         this.height = height;
     }
 
-    public boolean swapVisible(){
+    public boolean toggle() {
+        return excluded = !excluded;
+    }
+
+    public boolean swapVisible() {
         return visible = !visible;
     }
 
-    public boolean swapActive(){
+    public boolean swapActive() {
         return active = !active;
     }
 
-    public boolean swapEnabled(){
+    public boolean swapEnabled() {
         return enabled = !enabled;
     }
 
-    protected void setEvent(String name, IEvent event) {
+    protected boolean addChild(Control element) {
+        if (childs == null) {
+            childs = new ArrayList<>();
+        }
+
+        if (childs.contains(childs)) {
+            return false;
+        }
+
+        ((Collection) childs).add(element);
+
+        return true;
+    }
+
+    protected void addChilds(Collection<? extends Control> elements) {
+        if (childs == null) {
+            childs = new ArrayList<>();
+        }
+
+        childs.removeIf(elements::contains);
+        childs.addAll((Collection) elements);
+    }
+
+    protected boolean compareId(String id) {
+        return this.id != null && this.id.equals(id);
+    }
+
+    public Control getChildById(String id, int depth) {
+        for (Control control : childs) {
+            if (control.compareId(id)) {
+                return control;
+            }
+
+            if (depth > 0 || depth == -1) {
+                Control result = control.getChildById(id, depth == -1 ? depth : (depth - 1));
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    protected void setEventCallback(String name, IEvent event) {
         if (events == null) {
             events = new HashMap<>();
         }
@@ -62,8 +112,8 @@ public class Control {
         events.put(name, event);
     }
 
-    protected void setEvent(IEvent.PresetIdentifier identifier, IEvent event) {
-        setEvent(identifier.name(), event);
+    protected void setEventCallback(IEvent.PresetIdentifier identifier, IEvent event) {
+        setEventCallback(identifier.name(), event);
     }
 
     public void setTag(Object key, Object value) {
@@ -90,27 +140,6 @@ public class Control {
         return events.getOrDefault(name, null);
     }
 
-    protected boolean idEquals(String id) {
-        return this.id != null && this.id.equals(id);
-    }
-
-    public Control getChildById(String id, int depth) {
-        for (Control control : childs) {
-            if (control.idEquals(id)) {
-                return control;
-            }
-
-            if (depth > 0 || depth == -1) {
-                Control result = control.getChildById(id, depth == -1 ? depth : depth - 1);
-                if (result != null) {
-                    return result;
-                }
-            }
-        }
-
-        return null;
-    }
-
     public Object executeEvent(String event, Control sender, EventArguments arguments) {
         IEvent action = getEventByName(event);
         if (action == null) {
@@ -124,56 +153,56 @@ public class Control {
         return executeEvent(event.name(), sender, arguments);
     }
 
+    public boolean isAvailable() {
+        return loaded && !excluded;
+    }
+
     public boolean isVisible() {
         return visible && opacity > 0.0f;
     }
 
-    public void load() {
-        return; //todo
-    }
-
-    public void update() {
-        return; //todo
-    }
-
-    public boolean render() {
-        if (!isVisible()) {
+    protected boolean executeEventChain(IEvent.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, int depth) {
+        Object result = executeEvent(event, this, arguments);
+        if (checker != null && !checker.test(result)) {
             return false;
         }
 
-        if (executeEvent(IEvent.PresetIdentifier.RENDER, this, new EventArguments()) == null) {
-            return false;
-        }
-
-        if (childs != null) {
+        if ((depth > 0 || depth == -1) && childs != null) {
             for (Control child : childs) {
-                child.render();
+                child.executeEventChain(event, arguments, checker, depth == -1 ? depth : (depth - 1));
             }
         }
 
         return true;
     }
 
-    /*protected int adopt(Control child, boolean force){
-        if(childs == null){
-            childs = new ArrayList<>();
-        }
-
-        if(child.link(this, force)){
-            childs.add(child);
-        }
-
-        return childs.size();
+    protected boolean executeEventChain(IEvent.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, boolean executeChilds) {
+        return executeEventChain(event, arguments, checker, executeChilds ? -1 : 0);
     }
 
-    protected boolean link(Control parent, boolean force){
-        if(this.parent != null && !force){
+    private static boolean nonNull(Object object) {
+        return object != null;
+    }
+
+    public boolean load() {
+        return loaded = executeEventChain(IEvent.PresetIdentifier.LOAD, new EventArguments(), Control::nonNull, true);
+    }
+
+    public boolean unload() {
+        return loaded = !executeEventChain(IEvent.PresetIdentifier.UNLOAD, new EventArguments(), Control::nonNull, true);
+    }
+
+    public boolean update(boolean updateChilds) {
+        return executeEventChain(IEvent.PresetIdentifier.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
+    }
+
+    public boolean render(RenderProvider provider) {
+        if (!isAvailable() || !isVisible()) {
             return false;
         }
 
-        this.parent = parent;
-        this.owner = parent.owner;
+        RenderEventArguments context = new RenderEventArguments(provider);
 
-        return true;
-    }*/
+        return executeEventChain(IEvent.PresetIdentifier.RENDER, context, Control::nonNull, true);
+    }
 }
