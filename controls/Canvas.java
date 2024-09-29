@@ -10,8 +10,6 @@ import jgui.render.RenderProvider.ShapeType;
 public class Canvas extends Image {
     protected IEvent renderEvent;
 
-    //todo: scrolls
-
     public Canvas(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, String texture, IEvent renderEvent) {
         super(id, x, y, z, width, height, borderColor, bodyColor, type, texture);
 

@@ -119,7 +119,7 @@ public abstract class Control {
         setEventCallback(identifier.name(), event);
     }
 
-    public void setTag(Object key, Object value) {
+    public <K, V> void setTag(K key, V value) {
         if (tags == null) {
             tags = new HashMap<>();
         }
@@ -127,12 +127,19 @@ public abstract class Control {
         tags.put(key, value);
     }
 
-    public Object getTag(Object key, Object defaultValue) {
+    public <K, V> V getTag(K key, V defaultValue, boolean force) {
         if (tags == null || tags.isEmpty()) {
-            return null;
+            setTag(key, defaultValue);
+
+            return defaultValue;
         }
 
-        return tags.getOrDefault(key, defaultValue);
+        V result = (V)tags.getOrDefault(key, defaultValue);
+        if(result == null){
+            setTag(key, result = defaultValue);
+        }
+
+        return result;
     }
 
     public IEvent getEventByName(String name) {

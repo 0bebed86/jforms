@@ -1,18 +1,22 @@
 package jgui.event.arguments;
 
+import jgui.MouseButton;
 import jgui.event.EventArguments;
 
 public class MouseEventArguments extends EventArguments {
+
     public int x, y; //position
     public int count; //clicks
-    public int button; //l/r/m/x
+    public int factor; //wheel
+    public MouseButton button; //l/r/m/x
 
-    public MouseEventArguments(int x, int y, int button) {
+    public MouseEventArguments(int x, int y, int count, int factor, MouseButton button) {
         super();
 
         this.x = x;
-        this.y =y;
-        this.count = 1;
+        this.y = y;
+        this.count = count;
+        this.factor = factor;
         this.button = button;
     }
 }
