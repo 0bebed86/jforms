@@ -1,6 +1,6 @@
 package jgui.controls;
 
-import jgui.Control;
+import Control;
 
 public class Slider extends Control {
     //todo

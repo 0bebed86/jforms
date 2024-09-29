@@ -1,6 +1,6 @@
 package jgui.render;
 
-import jgui.RenderProvider;
+import RenderProvider;
 
 public class ProviderOpenGL extends RenderProvider {
     public ProviderOpenGL(){

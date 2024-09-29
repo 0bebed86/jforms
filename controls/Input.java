@@ -1,6 +1,6 @@
 package jgui.controls;
 
-import jgui.Control;
+import Control;
 
 public class Input extends Control {
     public Input(String id, int x, int y, int width, int height){

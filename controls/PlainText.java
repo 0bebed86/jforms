@@ -1,7 +1,7 @@
 package jgui.controls;
 
-import jgui.Control;
-import jgui.FontInfo;
+import Control;
+import FontInfo;
 
 public class PlainText extends Control {
     protected String label;

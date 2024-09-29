@@ -1,6 +1,6 @@
 package jgui.events;
 
-import jgui.EventArguments;
+import EventArguments;
 
 public class MouseEvent extends EventArguments {
     public int x, y; //position

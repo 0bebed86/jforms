@@ -1,8 +1,8 @@
 package jgui.controls;
 
-import jgui.Control;
-import jgui.EventArguments;
-import jgui.IEvent;
+import Control;
+import EventArguments;
+import IEvent;
 
 public class Canvas extends Image {
     //todo: scrolls
