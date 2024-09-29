@@ -1,24 +1,8 @@
 package jgui.render;
 
-import jgui.FontInfo;
-import jgui.render.RenderProvider.ShapeType;
+import jgui.util.IApplier;
 
 public abstract class RenderProvider {
-
-    public static enum ShapeType {
-        TRIANGLE(0), QUAD(1), CIRCLE(2);
-
-        public int value;
-
-        private ShapeType(int value) {
-            this.value = value;
-        }
-    }
-
-    protected static interface IApplier<T> {
-
-        boolean apply(T element);
-    }
 
     protected static class Stack<T> extends java.util.Stack<T> {
 

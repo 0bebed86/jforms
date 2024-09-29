@@ -1,4 +1,4 @@
-package jgui.controls;
+package jgui.render;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import jgui.event.EventArguments;
 import jgui.event.IEvent;
 import jgui.event.arguments.RenderEventArguments;
-import jgui.render.RenderProvider;
 
 public abstract class Control {
 
@@ -63,7 +62,7 @@ public abstract class Control {
         return enabled = !enabled;
     }
 
-    protected boolean addChild(Control element) {
+    protected <T extends Control> boolean addChild(T element) {
         if (childs == null) {
             childs = new ArrayList<>();
         }
@@ -191,7 +190,7 @@ public abstract class Control {
     }
 
     private static boolean nonNull(Object object) {
-        return object != null;
+        return object != null; //return Object::nonNull; //<- todo bc i dont have it right now and it gives me errors =(
     }
 
     public boolean load() {

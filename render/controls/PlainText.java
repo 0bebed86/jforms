@@ -1,9 +1,9 @@
-package jgui.controls;
+package jgui.render.controls;
 
-import jgui.FontInfo;
 import jgui.event.IEvent;
 import jgui.render.ColorRGBA;
-import jgui.render.RenderProvider.ShapeType;
+import jgui.render.FontInfo;
+import jgui.render.ShapeType;
 
 public class PlainText extends Canvas {
     protected String value;

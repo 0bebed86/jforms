@@ -1,6 +1,6 @@
 package jgui.event;
 
-import jgui.controls.Control;
+import jgui.render.Control;
 
 public interface IEvent {
     public static enum PresetIdentifier {

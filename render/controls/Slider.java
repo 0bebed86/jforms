@@ -1,10 +1,11 @@
-package jgui.controls;
+package jgui.render.controls;
 
 import jgui.event.EventArguments;
 import jgui.event.IEvent;
 import jgui.event.arguments.MouseEventArguments;
 import jgui.render.ColorRGBA;
-import jgui.render.RenderProvider.ShapeType;
+import jgui.render.Control;
+import jgui.render.ShapeType;
 
 public class Slider<T> extends Canvas {
 
@@ -50,6 +51,8 @@ public class Slider<T> extends Canvas {
         }
 
         element.applyHandlePosition(context.x, context.y);
+
+        element.executeEvent(IEvent.PresetIdentifier.DATA_CHANGED, control, arguments);
 
         return true;
     }

@@ -12,4 +12,8 @@ public class EventArguments {
     public EventArguments(){
         this(Instant.now().toEpochMilli());
     }
+
+    public long getTime(){
+        return time;
+    }
 }

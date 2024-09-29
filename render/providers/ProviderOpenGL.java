@@ -1,8 +1,9 @@
 package jgui.render.providers;
 
-import jgui.FontInfo;
+import jgui.render.FontInfo;
 import jgui.render.MouseCursor;
 import jgui.render.RenderProvider;
+import jgui.render.ShapeType;
 
 public class ProviderOpenGL extends RenderProvider {
 

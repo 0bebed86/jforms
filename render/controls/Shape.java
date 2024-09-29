@@ -1,11 +1,12 @@
-package jgui.controls;
+package jgui.render.controls;
 
 import jgui.event.EventArguments;
 import jgui.event.IEvent;
 import jgui.event.arguments.RenderEventArguments;
 import jgui.render.ColorRGBA;
+import jgui.render.Control;
 import jgui.render.RenderProvider;
-import jgui.render.RenderProvider.ShapeType;
+import jgui.render.ShapeType;
 
 public class Shape extends Control {
 
