@@ -1,11 +1,12 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
+import jgui.event.EventPreset;
+import jgui.event.IEventCallback;
 import jgui.event.arguments.MouseEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.ShapeType;
-import jgui.event.IEventCallback;
 
 public class Slider<T> extends Canvas {
 
@@ -27,7 +28,7 @@ public class Slider<T> extends Canvas {
         this.value = initial;
         this.ceil = ceil;
 
-        setEventCallback(IEventCallback.PresetIdentifier.MOUSE_MOVED, Slider::mouseMovedEvent);
+        setEventCallback(EventPreset.MOUSE_MOVED, Slider::mouseMovedEvent);
     }
 
     public T getValue() {
@@ -52,7 +53,7 @@ public class Slider<T> extends Canvas {
 
         element.applyHandlePosition(context.x, context.y);
 
-        element.executeEvent(IEventCallback.PresetIdentifier.DATA_CHANGED, control, arguments);
+        element.executeEvent(EventPreset.DATA_CHANGED, control, arguments);
 
         return true;
     }

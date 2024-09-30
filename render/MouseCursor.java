@@ -8,6 +8,7 @@ public enum MouseCursor {
     POINTER(null);
 
     public static interface ILoader {
+
         boolean load(MouseCursor cursor);
     }
 

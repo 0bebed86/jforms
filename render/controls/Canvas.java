@@ -1,12 +1,13 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
+import jgui.event.EventPreset;
+import jgui.event.IEventCallback;
 import jgui.event.arguments.RenderEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
-import jgui.event.IEventCallback;
 
 public class Canvas extends Image {
 
@@ -17,7 +18,7 @@ public class Canvas extends Image {
 
         this.renderEvent = renderEvent;
 
-        setEventCallback(IEventCallback.PresetIdentifier.RENDER, Canvas::renderEvent);
+        setEventCallback(EventPreset.RENDER, Canvas::renderEvent);
     }
 
     protected static boolean renderEvent(Control control, EventArguments arguments) {

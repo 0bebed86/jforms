@@ -27,7 +27,7 @@ public abstract class RenderProvider {
 
             T element = super.pop();
 
-            if(apply && applier != null){
+            if (apply && applier != null) {
                 applier.apply(element);
             }
 
@@ -43,30 +43,30 @@ public abstract class RenderProvider {
         }
     }
 
-    protected FontInfo defaultFont = null;
-    protected final Stack<FontInfo> fontStack = new Stack<>();
+    protected Font defaultFont = null;
+    protected final Stack<Font> fontStack = new Stack<>();
     protected final Stack<MouseCursor> cursorStack = new Stack<>();
     protected final Stack<Integer> colorStack = new Stack<>();
     protected final Stack<String> textureStack = new Stack<>();
     protected final Stack<Float> rotationStack = new Stack<>();
     protected final Stack<ShapeType> shapeTypeStack = new Stack<>();
 
-    protected RenderProvider(FontInfo defaultFont) {
+    protected RenderProvider(Font defaultFont) {
         this.defaultFont = defaultFont;
         this.fontStack.push(defaultFont);
     }
 
-    protected abstract boolean applyFont(FontInfo font);
+    protected abstract boolean applyFont(Font font);
 
-    public boolean pushFont(FontInfo font, boolean apply) {
+    public boolean pushFont(Font font, boolean apply) {
         return fontStack.pushApply(this::applyFont, font, apply);
     }
 
-    public FontInfo popFont(boolean apply) {
+    public Font popFont(boolean apply) {
         return fontStack.popApply(this::applyFont, true);
     }
 
-    public FontInfo getFont() {
+    public Font getFont() {
         return fontStack.get(defaultFont);
     }
 

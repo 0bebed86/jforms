@@ -1,37 +1,37 @@
 package jgui.render.providers;
 
-import jgui.render.FontInfo;
+import jgui.render.Font;
 import jgui.render.MouseCursor;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
 
 public class ProviderOpenGL extends RenderProvider {
 
-    protected ProviderOpenGL(FontInfo defaultFont) {
+    protected ProviderOpenGL(Font defaultFont) {
         super(defaultFont);
     }
 
     public static ProviderOpenGL initialize(String defaultFont) {
-        return new ProviderOpenGL(new FontInfo(defaultFont));
+        return new ProviderOpenGL(new Font(defaultFont));
     }
 
     @Override
-    protected boolean applyFont(FontInfo font){
+    protected boolean applyFont(Font font) {
         return false; //todo
     }
 
     @Override
-    protected boolean applyCursor(MouseCursor cusros){
+    protected boolean applyCursor(MouseCursor cusros) {
         return false; //todo
     }
 
     @Override
-    public boolean applyColor(int color){
+    public boolean applyColor(int color) {
         return false; //todo
     }
 
     @Override
-    public boolean applyTexture(String id){
+    public boolean applyTexture(String id) {
         return false; //todo
     }
 

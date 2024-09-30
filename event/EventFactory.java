@@ -8,37 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import jgui.render.Control;
 
-public abstract class EventFactory {
-
-    protected static class Node {
-
-        public Queue<IEventSender> processors;
-        public List<? extends Control> elements;
-
-        public Node() {
-            this.processors = new LinkedList<>();
-            this.elements = new ArrayList<>();
-        }
-
-        public boolean addElement(Control element) {
-            if (elements.contains(element)) {
-                return false;
-            }
-
-            return ((List) elements).add(element);
-        }
-
-        public int addProcessor(IEventSender processor) {
-            int index = processors.size();
-
-            processors.add(processor);
-
-            return index;
-        }
-    }
-
-    protected static final Map<String, Node> registry = new HashMap<>();
-
+public class EventFactory extends HashMap<String, List<? extends Control>>{
     public void registerControl(Control control, boolean registerChilds) {
         Queue<? extends Control> coming = new LinkedList<>();
 
@@ -47,12 +17,14 @@ public abstract class EventFactory {
 
             for (Map.Entry<String, IEventCallback> entry : current.getEventCallbacks().entrySet()) {
                 String event = entry.getKey();
-                Node node = registry.getOrDefault(event, null);
-                if (node == null) {
-                    registry.put(event, new Node());
+                List<? extends Control> elements = super.getOrDefault(event, null);
+                if (elements == null) {
+                    super.put(event, elements = new ArrayList<>());
                 }
 
-                node.addElement(current);
+                if (!elements.contains(current)) {
+                    ((List)elements).add(current);
+                }
             }
 
             if(registerChilds){
@@ -61,14 +33,18 @@ public abstract class EventFactory {
         }
     }
 
-    public void executeEvents(String event, EventArguments arguments){
-        Node node = registry.getOrDefault(event, null);
-        if (node == null) {
+    public void executeEventsChains(String event, EventArguments arguments){
+        List<? extends Control> elements = super.getOrDefault(event, null);
+        if (elements == null) {
             return;
         }
 
-        for(Control element : node.elements){
+        for(Control element : elements){
             element.executeEventChain(event, arguments, true);
         }
+    }
+
+    public void executeEventsChains(EventPreset event, EventArguments arguments){
+        executeEventsChains(event.name(), arguments);
     }
 }

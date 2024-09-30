@@ -1,28 +1,34 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
+import jgui.event.EventPreset;
 import jgui.event.arguments.RenderEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
-import jgui.event.IEventCallback;
 
 public class Shape extends Control {
 
     protected ColorRGBA borderColor;
     protected ColorRGBA bodyColor;
     protected ShapeType type;
+    protected float rounding;
 
-    public Shape(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type) {
+    public Shape(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, float rounding) {
         super(id, x, y, width, height);
         super.z = z;
 
         this.borderColor = borderColor;
         this.bodyColor = bodyColor;
         this.type = type;
+        this.rounding = rounding;
 
-        setEventCallback(IEventCallback.PresetIdentifier.RENDER, Shape::renderEvent);
+        setEventCallback(EventPreset.RENDER, Shape::renderEvent);
+    }
+
+    public Shape(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type) {
+        this(id, x, y, z, width, height, borderColor, bodyColor, type, 0.0f);
     }
 
     protected static boolean renderEvent(Control control, EventArguments arguments) {

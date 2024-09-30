@@ -1,9 +1,10 @@
 package jgui.render;
 
-public class FontInfo {
+public class Font {
+
     protected String fontFilePath;
 
-    public FontInfo(String fontFilePath){
+    public Font(String fontFilePath) {
         this.fontFilePath = fontFilePath;
     }
 }

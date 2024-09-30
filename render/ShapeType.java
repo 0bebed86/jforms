@@ -1,7 +1,7 @@
 package jgui.render;
 
 public enum ShapeType {
-    TRIANGLE(0), QUAD(1), CIRCLE(2);
+    TRIANGLE(0), QUAD(1);
 
     public int value;
 

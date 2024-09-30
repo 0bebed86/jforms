@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import jgui.Context;
 import jgui.event.EventArguments;
+import jgui.event.EventPreset;
 import jgui.event.IEventCallback;
 import jgui.event.arguments.RenderEventArguments;
 
@@ -57,7 +59,7 @@ public abstract class Control {
     public boolean isVisible() {
         return visible && opacity > 0.0f;
     }
-    
+
     public boolean compareId(String id) {
         return this.id != null && this.id.equals(id);
     }
@@ -124,7 +126,7 @@ public abstract class Control {
         childs.addAll((Collection) elements);
     }
 
-    public List<? extends Control> getChilds(){
+    public List<? extends Control> getChilds() {
         return childs;
     }
 
@@ -153,11 +155,11 @@ public abstract class Control {
         events.put(name, event);
     }
 
-    protected void setEventCallback(IEventCallback.PresetIdentifier identifier, IEventCallback event) {
+    protected void setEventCallback(EventPreset identifier, IEventCallback event) {
         setEventCallback(identifier.name(), event);
     }
-    
-    public Map<String, IEventCallback> getEventCallbacks(){
+
+    public Map<String, IEventCallback> getEventCallbacks() {
         return events;
     }
 
@@ -178,7 +180,7 @@ public abstract class Control {
         return action.invoke(sender, arguments);
     }
 
-    public Object executeEvent(IEventCallback.PresetIdentifier event, Control sender, EventArguments arguments) {
+    public Object executeEvent(EventPreset event, Control sender, EventArguments arguments) {
         return executeEvent(event.name(), sender, arguments);
     }
 
@@ -197,37 +199,37 @@ public abstract class Control {
         return true;
     }
 
-    protected boolean executeEventChain(IEventCallback.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, int depth) {
+    protected boolean executeEventChain(EventPreset event, EventArguments arguments, Predicate<Object> checker, int depth) {
         return executeEventChain(event.name(), arguments, checker, depth);
     }
 
-    public boolean executeEventChain(String event, EventArguments arguments, boolean executeChilds){
+    public boolean executeEventChain(String event, EventArguments arguments, boolean executeChilds) {
         return executeEventChain(event, arguments, Control::nonNull, executeChilds ? -1 : 0);
     }
 
-    public boolean executeEventChain(IEventCallback.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, boolean executeChilds) {
+    public boolean executeEventChain(EventPreset event, EventArguments arguments, Predicate<Object> checker, boolean executeChilds) {
         return executeEventChain(event.name(), arguments, checker, executeChilds ? -1 : 0);
     }
 
     public boolean load() {
-        return loaded = executeEventChain(IEventCallback.PresetIdentifier.LOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = executeEventChain(EventPreset.LOAD, new EventArguments(), Control::nonNull, true);
     }
 
     public boolean unload() {
-        return loaded = !executeEventChain(IEventCallback.PresetIdentifier.UNLOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = !executeEventChain(EventPreset.UNLOAD, new EventArguments(), Control::nonNull, true);
     }
 
     public boolean update(boolean updateChilds) {
-        return executeEventChain(IEventCallback.PresetIdentifier.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
+        return executeEventChain(EventPreset.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
     }
 
-    public boolean render(RenderContext context) {
+    public boolean render(Context context) {
         if (!isAvailable() || !isVisible()) {
             return false;
         }
 
-        RenderEventArguments arguments = new RenderEventArguments(context);
+        RenderEventArguments arguments = new RenderEventArguments(context.getRootElement(), context.getRenderProvider());
 
-        return executeEventChain(IEventCallback.PresetIdentifier.RENDER, arguments, Control::nonNull, true);
+        return executeEventChain(EventPreset.RENDER, arguments, Control::nonNull, true);
     }
 }
