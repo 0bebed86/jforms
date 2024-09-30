@@ -1,19 +1,20 @@
 package jgui.event.arguments;
 
+import jgui.render.RenderContext;
 import jgui.event.EventArguments;
 import jgui.render.RenderProvider;
 
 public class RenderEventArguments extends EventArguments {
 
-    protected RenderProvider renderer;
+    protected RenderContext context;
 
-    public RenderEventArguments(RenderProvider renderer) {
+    public RenderEventArguments(RenderContext context) {
         super();
 
-        this.renderer = renderer;
+        this.context = context;
     }
 
     public RenderProvider getProvider(){
-        return renderer;
+        return context.getRenderProvider();
     }
 }

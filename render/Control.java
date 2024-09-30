@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import jgui.event.EventArguments;
-import jgui.event.IEvent;
+import jgui.event.IEventCallback;
 import jgui.event.arguments.RenderEventArguments;
 
 public abstract class Control {
@@ -19,7 +19,7 @@ public abstract class Control {
     //protected Control parent = null;
     protected List<? extends Control> childs = null;
     protected Map<Object, Object> tags = null;
-    protected Map<String, IEvent> events = null;
+    protected Map<String, IEventCallback> events = null;
 
     protected int x = 0; //display x
     protected int y = 0; //display y
@@ -46,6 +46,22 @@ public abstract class Control {
         this.height = height;
     }
 
+    private static boolean nonNull(Object object) {
+        return object != null; //return Object::nonNull; //<- todo bc i dont have it right now and it gives me errors =(
+    }
+
+    public boolean isAvailable() {
+        return loaded && !excluded;
+    }
+
+    public boolean isVisible() {
+        return visible && opacity > 0.0f;
+    }
+    
+    public boolean compareId(String id) {
+        return this.id != null && this.id.equals(id);
+    }
+
     public boolean toggle() {
         return excluded = !excluded;
     }
@@ -60,6 +76,29 @@ public abstract class Control {
 
     public boolean swapEnabled() {
         return enabled = !enabled;
+    }
+
+    public <K, V> void setTag(K key, V value) {
+        if (tags == null) {
+            tags = new HashMap<>();
+        }
+
+        tags.put(key, value);
+    }
+
+    public <K, V> V getTag(K key, V defaultValue, boolean force) {
+        if (tags == null || tags.isEmpty()) {
+            setTag(key, defaultValue);
+
+            return defaultValue;
+        }
+
+        V result = (V) tags.getOrDefault(key, defaultValue);
+        if (result == null) {
+            setTag(key, result = defaultValue);
+        }
+
+        return result;
     }
 
     protected <T extends Control> boolean addChild(T element) {
@@ -85,8 +124,8 @@ public abstract class Control {
         childs.addAll((Collection) elements);
     }
 
-    protected boolean compareId(String id) {
-        return this.id != null && this.id.equals(id);
+    public List<? extends Control> getChilds(){
+        return childs;
     }
 
     public Control getChildById(String id, int depth) {
@@ -106,7 +145,7 @@ public abstract class Control {
         return null;
     }
 
-    protected void setEventCallback(String name, IEvent event) {
+    protected void setEventCallback(String name, IEventCallback event) {
         if (events == null) {
             events = new HashMap<>();
         }
@@ -114,34 +153,15 @@ public abstract class Control {
         events.put(name, event);
     }
 
-    protected void setEventCallback(IEvent.PresetIdentifier identifier, IEvent event) {
+    protected void setEventCallback(IEventCallback.PresetIdentifier identifier, IEventCallback event) {
         setEventCallback(identifier.name(), event);
     }
-
-    public <K, V> void setTag(K key, V value) {
-        if (tags == null) {
-            tags = new HashMap<>();
-        }
-
-        tags.put(key, value);
+    
+    public Map<String, IEventCallback> getEventCallbacks(){
+        return events;
     }
 
-    public <K, V> V getTag(K key, V defaultValue, boolean force) {
-        if (tags == null || tags.isEmpty()) {
-            setTag(key, defaultValue);
-
-            return defaultValue;
-        }
-
-        V result = (V)tags.getOrDefault(key, defaultValue);
-        if(result == null){
-            setTag(key, result = defaultValue);
-        }
-
-        return result;
-    }
-
-    public IEvent getEventByName(String name) {
+    public IEventCallback getEventByName(String name) {
         if (events == null || events.isEmpty()) {
             return null;
         }
@@ -150,7 +170,7 @@ public abstract class Control {
     }
 
     public Object executeEvent(String event, Control sender, EventArguments arguments) {
-        IEvent action = getEventByName(event);
+        IEventCallback action = getEventByName(event);
         if (action == null) {
             return null;
         }
@@ -158,19 +178,11 @@ public abstract class Control {
         return action.invoke(sender, arguments);
     }
 
-    public Object executeEvent(IEvent.PresetIdentifier event, Control sender, EventArguments arguments) {
+    public Object executeEvent(IEventCallback.PresetIdentifier event, Control sender, EventArguments arguments) {
         return executeEvent(event.name(), sender, arguments);
     }
 
-    public boolean isAvailable() {
-        return loaded && !excluded;
-    }
-
-    public boolean isVisible() {
-        return visible && opacity > 0.0f;
-    }
-
-    protected boolean executeEventChain(IEvent.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, int depth) {
+    protected boolean executeEventChain(String event, EventArguments arguments, Predicate<Object> checker, int depth) {
         Object result = executeEvent(event, this, arguments);
         if (checker != null && !checker.test(result)) {
             return false;
@@ -185,33 +197,37 @@ public abstract class Control {
         return true;
     }
 
-    protected boolean executeEventChain(IEvent.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, boolean executeChilds) {
-        return executeEventChain(event, arguments, checker, executeChilds ? -1 : 0);
+    protected boolean executeEventChain(IEventCallback.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, int depth) {
+        return executeEventChain(event.name(), arguments, checker, depth);
     }
 
-    private static boolean nonNull(Object object) {
-        return object != null; //return Object::nonNull; //<- todo bc i dont have it right now and it gives me errors =(
+    public boolean executeEventChain(String event, EventArguments arguments, boolean executeChilds){
+        return executeEventChain(event, arguments, Control::nonNull, executeChilds ? -1 : 0);
+    }
+
+    public boolean executeEventChain(IEventCallback.PresetIdentifier event, EventArguments arguments, Predicate<Object> checker, boolean executeChilds) {
+        return executeEventChain(event.name(), arguments, checker, executeChilds ? -1 : 0);
     }
 
     public boolean load() {
-        return loaded = executeEventChain(IEvent.PresetIdentifier.LOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = executeEventChain(IEventCallback.PresetIdentifier.LOAD, new EventArguments(), Control::nonNull, true);
     }
 
     public boolean unload() {
-        return loaded = !executeEventChain(IEvent.PresetIdentifier.UNLOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = !executeEventChain(IEventCallback.PresetIdentifier.UNLOAD, new EventArguments(), Control::nonNull, true);
     }
 
     public boolean update(boolean updateChilds) {
-        return executeEventChain(IEvent.PresetIdentifier.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
+        return executeEventChain(IEventCallback.PresetIdentifier.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
     }
 
-    public boolean render(RenderProvider provider) {
+    public boolean render(RenderContext context) {
         if (!isAvailable() || !isVisible()) {
             return false;
         }
 
-        RenderEventArguments context = new RenderEventArguments(provider);
+        RenderEventArguments arguments = new RenderEventArguments(context);
 
-        return executeEventChain(IEvent.PresetIdentifier.RENDER, context, Control::nonNull, true);
+        return executeEventChain(IEventCallback.PresetIdentifier.RENDER, arguments, Control::nonNull, true);
     }
 }

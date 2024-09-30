@@ -1,11 +1,11 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
-import jgui.event.IEvent;
 import jgui.event.arguments.MouseEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.ShapeType;
+import jgui.event.IEventCallback;
 
 public class Slider<T> extends Canvas {
 
@@ -14,7 +14,7 @@ public class Slider<T> extends Canvas {
     protected boolean vertical;
     protected T floor, ceil, value;
 
-    public Slider(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, String texture, IEvent renderEvent, T floor, T initial, T ceil, boolean vertical) {
+    public Slider(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, String texture, IEventCallback renderEvent, T floor, T initial, T ceil, boolean vertical) {
         super(id, x, y, z, width, height, borderColor, bodyColor, ShapeType.QUAD, texture, renderEvent);
 
         if (handle != null) {
@@ -27,7 +27,7 @@ public class Slider<T> extends Canvas {
         this.value = initial;
         this.ceil = ceil;
 
-        setEventCallback(IEvent.PresetIdentifier.MOUSE_MOVED, Slider::mouseMovedEvent);
+        setEventCallback(IEventCallback.PresetIdentifier.MOUSE_MOVED, Slider::mouseMovedEvent);
     }
 
     public T getValue() {
@@ -52,7 +52,7 @@ public class Slider<T> extends Canvas {
 
         element.applyHandlePosition(context.x, context.y);
 
-        element.executeEvent(IEvent.PresetIdentifier.DATA_CHANGED, control, arguments);
+        element.executeEvent(IEventCallback.PresetIdentifier.DATA_CHANGED, control, arguments);
 
         return true;
     }

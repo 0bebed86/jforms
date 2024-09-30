@@ -1,22 +1,23 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
-import jgui.event.IEvent;
 import jgui.event.arguments.RenderEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
+import jgui.event.IEventCallback;
 
 public class Canvas extends Image {
-    protected IEvent renderEvent;
 
-    public Canvas(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, String texture, IEvent renderEvent) {
+    protected IEventCallback renderEvent;
+
+    public Canvas(String id, int x, int y, int z, int width, int height, ColorRGBA borderColor, ColorRGBA bodyColor, ShapeType type, String texture, IEventCallback renderEvent) {
         super(id, x, y, z, width, height, borderColor, bodyColor, type, texture);
 
         this.renderEvent = renderEvent;
 
-        setEventCallback(IEvent.PresetIdentifier.RENDER, Canvas::renderEvent);
+        setEventCallback(IEventCallback.PresetIdentifier.RENDER, Canvas::renderEvent);
     }
 
     protected static boolean renderEvent(Control control, EventArguments arguments) {

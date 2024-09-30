@@ -1,12 +1,12 @@
 package jgui.render.controls;
 
 import jgui.event.EventArguments;
-import jgui.event.IEvent;
 import jgui.event.arguments.RenderEventArguments;
 import jgui.render.ColorRGBA;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
+import jgui.event.IEventCallback;
 
 public class Shape extends Control {
 
@@ -22,7 +22,7 @@ public class Shape extends Control {
         this.bodyColor = bodyColor;
         this.type = type;
 
-        setEventCallback(IEvent.PresetIdentifier.RENDER, Shape::renderEvent);
+        setEventCallback(IEventCallback.PresetIdentifier.RENDER, Shape::renderEvent);
     }
 
     protected static boolean renderEvent(Control control, EventArguments arguments) {

@@ -2,7 +2,8 @@ package jgui.event;
 
 import jgui.render.Control;
 
-public interface IEvent {
+public interface IEventCallback {
+
     public static enum PresetIdentifier {
         LOAD, UNLOAD, RENDER, UPDATE,
         MOUSE_CLICK, MOUSE_DOWN, MOUSE_UP, MOUSE_ENTER, MOUSE_LEAVE, MOUSE_WHEEL, MOUSE_MOVED,
