@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import jgui.event.EventArguments;
 import jgui.event.EventFactory;
+import jgui.event.EventPreset;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 
@@ -87,8 +89,20 @@ public class Context {
         return rootElement;
     }
 
+    public boolean executeEvent(String event, EventArguments arguments) {
+        if (rootElement == null) {
+            return false;
+        }
+
+        return rootElement.executeEventChain(event, arguments, true);
+    }
+
+    public boolean executeEvent(EventPreset event, EventArguments arguments) {
+        return executeEvent(event.name(), arguments);
+    }
+
     public boolean load() {
-        if(rootElement == null){
+        if (rootElement == null) {
             return false;
         }
 
@@ -96,7 +110,7 @@ public class Context {
     }
 
     public boolean unload() {
-        if(rootElement == null){
+        if (rootElement == null) {
             return false;
         }
 
@@ -104,15 +118,15 @@ public class Context {
     }
 
     public boolean update() {
-        if(rootElement == null){
+        if (rootElement == null) {
             return false;
         }
 
         return rootElement.update(true);
     }
 
-    public boolean render(){
-        if(rootElement == null){
+    public boolean render() {
+        if (rootElement == null) {
             return false;
         }
 
