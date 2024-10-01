@@ -4,6 +4,7 @@ import jgui.render.Font;
 import jgui.render.MouseCursor;
 import jgui.render.RenderProvider;
 import jgui.render.ShapeType;
+import jgui.render.ViewPort;
 
 public class ProviderOpenGL extends RenderProvider {
 
@@ -22,6 +23,11 @@ public class ProviderOpenGL extends RenderProvider {
 
     @Override
     protected boolean applyCursor(MouseCursor cusros) {
+        return false; //todo
+    }
+
+    @Override
+    protected boolean applyViewPort(ViewPort viewPort){
         return false; //todo
     }
 

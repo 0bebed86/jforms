@@ -4,6 +4,7 @@ import java.time.Instant;
 
 public class EventArguments {
     protected long time;
+    protected boolean abort;
 
     public EventArguments(long time){
         this.time = time;
@@ -15,5 +16,9 @@ public class EventArguments {
 
     public long getTime(){
         return time;
+    }
+
+    public boolean isAbort(){
+        return abort;
     }
 }

@@ -99,63 +99,71 @@ public class ColorRGBA {
         return (byte) ((value >> offsetRed) & byteFactorByte);
     }
 
-    public void setRedByte(byte value) {
+    public ColorRGBA setRedByte(byte value) {
         this.value = (this.value & 0x00FFFFFF) | ((value & byteFactorByte) << offsetRed);
+
+        return this;
     }
 
     public byte getGreenByte() {
         return (byte) ((value >> offsetGreen) & byteFactorByte);
     }
 
-    public void setGreenByte(byte value) {
+    public ColorRGBA setGreenByte(byte value) {
         this.value = (this.value & 0xFF00FFFF) | ((value & byteFactorByte) << offsetGreen);
+
+        return this;
     }
 
     public byte getBlueByte() {
         return (byte) ((value >> offsetBlue) & byteFactorByte);
     }
 
-    public void setBlueByte(byte value) {
+    public ColorRGBA setBlueByte(byte value) {
         this.value = (this.value & 0xFFFF00FF) | ((value & byteFactorByte) << offsetBlue);
+
+        return this;
     }
 
     public byte getAlphaByte() {
         return (byte) ((value >> offsetAlpha) & byteFactorByte);
     }
 
-    public void setAlphaByte(byte value) {
+    public ColorRGBA setAlphaByte(byte value) {
         this.value = (this.value & 0xFFFFFF00) | ((value & byteFactorByte) << offsetAlpha);
+
+        return this;
     }
 
     public float getRedFloat() {
         return (float) getRedByte() / byteFactorFloat;
     }
 
-    public void setRedFloat(float value) {
-        setRedByte((byte) (value * byteFactorFloat));
+    public ColorRGBA setRedFloat(float value) {
+        return setRedByte((byte) (value * byteFactorFloat));
     }
 
     public float getGreenFloat() {
         return (float) getGreenByte() / byteFactorFloat;
     }
 
-    public void setGreenFloat(float value) {
-        setGreenByte((byte) (value * byteFactorFloat));
+    public ColorRGBA setGreenFloat(float value) {
+        return setGreenByte((byte) (value * byteFactorFloat));
     }
 
     public float getBlueFloat() {
         return (float) getBlueByte() / byteFactorFloat;
     }
 
-    public void setBlueFloat(float value) {
-        setBlueByte((byte) (value * byteFactorFloat));
+    public ColorRGBA setBlueFloat(float value) {
+        return setBlueByte((byte) (value * byteFactorFloat));
     }
 
     public float getAlphaFloat() {
         return (float) getAlphaByte() / byteFactorFloat;
     }
 
-    public void setAlphaFloat(float value) {
-        setAlphaByte((byte) (value * byteFactorFloat));
+    public ColorRGBA setAlphaFloat(float value) {
+        return setAlphaByte((byte) (value * byteFactorFloat));
     }
 }

@@ -10,6 +10,7 @@ import jgui.Context;
 import jgui.event.EventArguments;
 import jgui.event.EventPreset;
 import jgui.event.IEventCallback;
+import jgui.event.IEventValidator;
 import jgui.event.arguments.RenderEventArguments;
 
 public abstract class Control {
@@ -31,6 +32,8 @@ public abstract class Control {
     protected int height = 0;
     protected int depth = 0;
 
+    protected ViewPort viewPort = null;
+
     protected boolean loaded = false;
     protected boolean excluded = false;
     protected boolean visible = true;
@@ -40,12 +43,20 @@ public abstract class Control {
     protected float opacity = 1.0f;
     protected float rotation = 0.0f;
 
+    public Control(){
+        return;
+    }
+
     protected Control(String id, int x, int y, int width, int height) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.viewPort = new ViewPort(x, y, x + width, y + height);
+
+        setEventCallback(EventPreset.PRE_RENDER, Control::preRenderEvent);
+        setEventCallback(EventPreset.POST_RENDER, Control::postRenderEvent);
     }
 
     private static boolean nonNull(Object object) {
@@ -147,7 +158,7 @@ public abstract class Control {
         return null;
     }
 
-    protected void setEventCallback(String name, IEventCallback event) {
+    public void setEventCallback(String name, IEventCallback event) {
         if (events == null) {
             events = new HashMap<>();
         }
@@ -155,7 +166,7 @@ public abstract class Control {
         events.put(name, event);
     }
 
-    protected void setEventCallback(EventPreset identifier, IEventCallback event) {
+    public void setEventCallback(EventPreset identifier, IEventCallback event) {
         setEventCallback(identifier.name(), event);
     }
 
@@ -177,7 +188,28 @@ public abstract class Control {
             return null;
         }
 
-        return action.invoke(sender, arguments);
+        boolean isRender = event.equals(EventPreset.RENDER.name());
+        if(isRender){
+            IEventCallback pre = getEventByName(EventPreset.PRE_RENDER.name());
+            if(pre != null){
+                pre.invoke(sender, arguments);
+
+                if(arguments.isAbort()){
+                    return null;
+                }
+            }
+        }
+
+        Object result = action.invoke(sender, arguments);
+
+        if(isRender){
+            IEventCallback post = getEventByName(EventPreset.POST_RENDER.name());
+            if(post != null){
+                post.invoke(sender, arguments);
+            }
+        }
+
+        return result;
     }
 
     public Object executeEvent(EventPreset event, Control sender, EventArguments arguments) {
@@ -211,6 +243,29 @@ public abstract class Control {
         return executeEventChain(event.name(), arguments, checker, executeChilds ? -1 : 0);
     }
 
+    public EventArguments validate(String event, IEventValidator validator, Predicate<Object> checker, int depth){
+        EventArguments result = validator.validate(this, event);
+        if (checker != null && !checker.test(result)) {
+            return null;
+        }
+
+        if ((depth > 0 || depth == -1) && childs != null) {
+            for (Control child : childs) {
+                child.validate(event, validator, checker, depth == -1 ? depth : (depth - 1));
+            }
+        }
+
+        return result;
+    }
+
+    public EventArguments validate(String event, IEventValidator validator, int depth){
+        return validate(event, validator, Control::nonNull, depth);
+    }
+
+    public EventArguments validate(String event, IEventValidator validator, boolean validateChilds){
+        return validate(event, validator, Control::nonNull, validateChilds ? -1 : 0);
+    }
+
     public boolean load() {
         return loaded = executeEventChain(EventPreset.LOAD, new EventArguments(), Control::nonNull, true);
     }
@@ -231,5 +286,31 @@ public abstract class Control {
         RenderEventArguments arguments = new RenderEventArguments(context.getRootElement(), context.getRenderProvider());
 
         return executeEventChain(EventPreset.RENDER, arguments, Control::nonNull, true);
+    }
+
+    protected static Object preRenderEvent(Control sender, EventArguments arguments){
+        if(!(arguments instanceof RenderEventArguments)){
+            return null;
+        }
+
+        RenderEventArguments context = (RenderEventArguments)arguments;
+        RenderProvider provider = context.getProvider();
+        
+        provider.pushViewPort(sender.viewPort, true);
+
+        return null;
+    }
+
+    protected static Object postRenderEvent(Control sender, EventArguments arguments){
+        if(!(arguments instanceof RenderEventArguments)){
+            return null;
+        }
+
+        RenderEventArguments context = (RenderEventArguments)arguments;
+        RenderProvider provider = context.getProvider();
+        
+        provider.popViewPort(true);
+
+        return null;
     }
 }

@@ -44,8 +44,11 @@ public abstract class RenderProvider {
     }
 
     protected Font defaultFont = null;
+    protected MouseCursor defaultCursor = null;
+
     protected final Stack<Font> fontStack = new Stack<>();
     protected final Stack<MouseCursor> cursorStack = new Stack<>();
+    protected final Stack<ViewPort> viewPortStack = new Stack<>();
     protected final Stack<Integer> colorStack = new Stack<>();
     protected final Stack<String> textureStack = new Stack<>();
     protected final Stack<Float> rotationStack = new Stack<>();
@@ -53,7 +56,7 @@ public abstract class RenderProvider {
 
     protected RenderProvider(Font defaultFont) {
         this.defaultFont = defaultFont;
-        this.fontStack.push(defaultFont);
+        this.defaultCursor = MouseCursor.DEFAULT;
     }
 
     protected abstract boolean applyFont(Font font);
@@ -63,7 +66,7 @@ public abstract class RenderProvider {
     }
 
     public Font popFont(boolean apply) {
-        return fontStack.popApply(this::applyFont, true);
+        return fontStack.popApply(this::applyFont, apply);
     }
 
     public Font getFont() {
@@ -77,11 +80,39 @@ public abstract class RenderProvider {
     }
 
     public MouseCursor popCursor(boolean apply) {
-        return cursorStack.popApply(this::applyCursor, true);
+        return cursorStack.popApply(this::applyCursor, apply);
     }
 
     public MouseCursor getCursor() {
         return cursorStack.get(MouseCursor.DEFAULT);
+    }
+
+    protected abstract boolean applyViewPort(ViewPort viewPort);
+
+    public boolean pushViewPort(ViewPort viewPort, boolean apply) {
+        return viewPortStack.pushApply(this::applyViewPort, viewPort, apply);
+    }
+
+    public ViewPort popViewPort(boolean apply) {
+        return viewPortStack.popApply(this::applyViewPort, apply);
+    }
+
+    public ViewPort getViewPort() {
+        return viewPortStack.get(null);
+    }
+
+    public ViewPort getViewPortAbsolute(){
+        if(viewPortStack.isEmpty()){
+            return null;
+        }
+
+        ViewPort result = new ViewPort();
+
+        for(ViewPort current : viewPortStack){
+            result.merge(current, false);
+        }
+
+        return result;
     }
 
     protected abstract boolean applyColor(int color);
@@ -91,7 +122,7 @@ public abstract class RenderProvider {
     }
 
     public int popColor(boolean apply) {
-        return colorStack.popApply(this::applyColor, true);
+        return colorStack.popApply(this::applyColor, apply);
     }
 
     public int getColor() {
@@ -105,7 +136,7 @@ public abstract class RenderProvider {
     }
 
     public String popTexture(boolean apply) {
-        return textureStack.popApply(this::applyTexture, true);
+        return textureStack.popApply(this::applyTexture, apply);
     }
 
     public String getTexture() {
@@ -119,7 +150,7 @@ public abstract class RenderProvider {
     }
 
     public float popRotation(boolean apply) {
-        return rotationStack.popApply(this::applyRotation, true);
+        return rotationStack.popApply(this::applyRotation, apply);
     }
 
     public float getRotation() {
@@ -134,7 +165,7 @@ public abstract class RenderProvider {
     }
 
     public ShapeType popShapeType(boolean apply) {
-        return shapeTypeStack.popApply(this::applyShapeType, true);
+        return shapeTypeStack.popApply(this::applyShapeType, apply);
     }
 
     public ShapeType getShapeType() {

@@ -3,26 +3,36 @@ package jgui;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Queue;
 import jgui.event.EventArguments;
 import jgui.event.EventFactory;
 import jgui.event.EventPreset;
+import jgui.event.IEventCallback;
+import jgui.event.IEventValidator;
 import jgui.render.Control;
 import jgui.render.RenderProvider;
 
 public class Context {
 
-    protected RenderProvider renderProvider;
-    protected EventFactory eventFactory;
+    protected RenderProvider renderProvider = null;
+    protected EventFactory eventFactory = null;
+    protected Map<String, Object> styleVariables = null;
 
-    protected List<? extends Control> elements;
-    protected Control rootElement;
+    protected List<? extends Control> elements = null;
+    protected Control rootElement = null;
 
-    public Context(RenderProvider renderProvider, EventFactory eventFactory) {
+    public Context(RenderProvider renderProvider, EventFactory eventFactory, Map<String, Object> styleVariables) {
         this.renderProvider = renderProvider;
         this.eventFactory = eventFactory;
+        this.styleVariables = styleVariables;
         this.elements = new ArrayList<>();
         this.rootElement = null;
+    }
+
+    public Context(RenderProvider renderProvider) {
+        this(renderProvider, new EventFactory(), new HashMap<>());
     }
 
     public RenderProvider getRenderProvider() {
@@ -99,6 +109,27 @@ public class Context {
 
     public boolean executeEvent(EventPreset event, EventArguments arguments) {
         return executeEvent(event.name(), arguments);
+    }
+
+    public boolean validate(String event, IEventValidator validator, boolean execute) {
+        if (rootElement == null) {
+            return false;
+        }
+
+        EventArguments arguments = rootElement.validate(event, validator, -1);
+        if (arguments == null) {
+            return false;
+        }
+
+        if (execute) {
+            executeEvent(event, arguments);
+        }
+
+        return true;
+    }
+
+    public boolean validate(EventPreset event, IEventValidator validator, boolean execute) {
+        return validate(event.name(), validator, execute);
     }
 
     public boolean load() {
