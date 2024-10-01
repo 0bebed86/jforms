@@ -1,11 +1,9 @@
 package jgui.example;
 
 import jgui.Context;
-import jgui.example.forms.*;
 import jgui.event.*;
-import jgui.event.arguments.*;
+import jgui.example.forms.*;
 import jgui.render.*;
-import jgui.render.controls.*;
 
 public class Application {
     public static void main(String[] args) {
@@ -23,11 +21,13 @@ public class Application {
         //sample example your render loop or something idk :P
         boolean active = false; //ok imagine it is true or a complex condition idgf :\
         while(active){
+            //render all visible controls
             jguiContext.render();
         }
 
         //sample your event validation loop
         while(active){
+            //validate and execute happens events
             jguiContext.validate(EventPreset.MOUSE_CLICK, Application::mouseClickValidator, true);
         }
     }
