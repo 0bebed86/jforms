@@ -12,6 +12,7 @@ import jgui.event.EventPreset;
 import jgui.event.IEventCallback;
 import jgui.event.IEventValidator;
 import jgui.event.arguments.RenderEventArguments;
+import jgui.event.arguments.ValidationEventArguments;
 
 public abstract class Control {
 
@@ -43,7 +44,7 @@ public abstract class Control {
     protected float opacity = 1.0f;
     protected float rotation = 0.0f;
 
-    public Control(){
+    public Control() {
         return;
     }
 
@@ -189,12 +190,12 @@ public abstract class Control {
         }
 
         boolean isRender = event.equals(EventPreset.RENDER.name());
-        if(isRender){
+        if (isRender) {
             IEventCallback pre = getEventByName(EventPreset.PRE_RENDER.name());
-            if(pre != null){
+            if (pre != null) {
                 pre.invoke(sender, arguments);
 
-                if(arguments.isAbort()){
+                if (arguments.isAbort()) {
                     return null;
                 }
             }
@@ -202,9 +203,9 @@ public abstract class Control {
 
         Object result = action.invoke(sender, arguments);
 
-        if(isRender){
+        if (isRender) {
             IEventCallback post = getEventByName(EventPreset.POST_RENDER.name());
-            if(post != null){
+            if (post != null) {
                 post.invoke(sender, arguments);
             }
         }
@@ -243,7 +244,15 @@ public abstract class Control {
         return executeEventChain(event.name(), arguments, checker, executeChilds ? -1 : 0);
     }
 
-    public EventArguments validate(String event, IEventValidator validator, Predicate<Object> checker, int depth){
+    public EventArguments validate(String event, IEventValidator validator, Predicate<Object> checker, int depth) {
+        ValidationEventArguments validationArguments = new ValidationEventArguments(event);
+        
+        executeEvent(EventPreset.EVENT_VALIDATE, this, validationArguments);
+
+        if (validationArguments.isAbort()) {
+            return null;
+        }
+
         EventArguments result = validator.validate(this, event);
         if (checker != null && !checker.test(result)) {
             return null;
@@ -258,11 +267,11 @@ public abstract class Control {
         return result;
     }
 
-    public EventArguments validate(String event, IEventValidator validator, int depth){
+    public EventArguments validate(String event, IEventValidator validator, int depth) {
         return validate(event, validator, Control::nonNull, depth);
     }
 
-    public EventArguments validate(String event, IEventValidator validator, boolean validateChilds){
+    public EventArguments validate(String event, IEventValidator validator, boolean validateChilds) {
         return validate(event, validator, Control::nonNull, validateChilds ? -1 : 0);
     }
 
@@ -288,27 +297,27 @@ public abstract class Control {
         return executeEventChain(EventPreset.RENDER, arguments, Control::nonNull, true);
     }
 
-    protected static Object preRenderEvent(Control sender, EventArguments arguments){
-        if(!(arguments instanceof RenderEventArguments)){
+    protected static Object preRenderEvent(Control sender, EventArguments arguments) {
+        if (!(arguments instanceof RenderEventArguments)) {
             return null;
         }
 
-        RenderEventArguments context = (RenderEventArguments)arguments;
+        RenderEventArguments context = (RenderEventArguments) arguments;
         RenderProvider provider = context.getProvider();
-        
+
         provider.pushViewPort(sender.viewPort, true);
 
         return null;
     }
 
-    protected static Object postRenderEvent(Control sender, EventArguments arguments){
-        if(!(arguments instanceof RenderEventArguments)){
+    protected static Object postRenderEvent(Control sender, EventArguments arguments) {
+        if (!(arguments instanceof RenderEventArguments)) {
             return null;
         }
 
-        RenderEventArguments context = (RenderEventArguments)arguments;
+        RenderEventArguments context = (RenderEventArguments) arguments;
         RenderProvider provider = context.getProvider();
-        
+
         provider.popViewPort(true);
 
         return null;

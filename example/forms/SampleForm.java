@@ -27,7 +27,7 @@ public class SampleForm extends Form {
         initializeElements(font); //call elements initializer
     }
 
-    //create controls initialization method
+    //create controls initialization method (or init they immidiately in constructor)
     protected void initializeElements(Font font) {
         this.font = font;
 
