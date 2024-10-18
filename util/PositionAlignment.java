@@ -28,6 +28,10 @@ RIGHT:                  a b c d     x = 8
         return value;
     }
 
+    public static float factor(float minimal, float value, float maximal){
+        return (value - minimal) / (maximal - minimal);
+    }
+
     /*public int alignInBounds(int left, int begin, int end, int right){
         int width = right - left; //width of holder
         int length = end - begin; //length of text

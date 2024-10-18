@@ -10,8 +10,8 @@ public class MouseEventArguments extends EventArguments {
     public int factor; //wheel
     public MouseButton button; //l/r/m/x
 
-    public MouseEventArguments(int x, int y, int count, int factor, MouseButton button) {
-        super();
+    public MouseEventArguments(String event, int x, int y, int count, int factor, MouseButton button) {
+        super(event);
 
         this.x = x;
         this.y = y;

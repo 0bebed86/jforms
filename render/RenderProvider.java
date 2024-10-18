@@ -172,9 +172,7 @@ public abstract class RenderProvider {
         return shapeTypeStack.get(null);
     }
 
-    public abstract boolean renderShapeFilled(int x, int y, int z, int width, int height, int color);
-
-    public abstract boolean renderShapeBorder(int x, int y, int z, int width, int height, int color);
+    public abstract boolean renderShape(int x, int y, int z, int width, int height, int color, float rounding, boolean fill);
 
     public abstract boolean renderString(String text, int x, int y, int z, int width, int height, int color);
 

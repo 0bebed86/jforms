@@ -1,14 +1,14 @@
 package jforms.event.arguments;
 
 import jforms.event.EventArguments;
+import jforms.event.EventPreset;
 
 public class ValidationEventArguments extends EventArguments {
-
-    protected String event;
-
     public ValidationEventArguments(String event) {
-        super();
+        super(event);
+    }
 
-        this.event = event;
+    public ValidationEventArguments(EventPreset event) {
+        super(event);
     }
 }

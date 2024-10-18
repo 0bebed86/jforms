@@ -92,6 +92,62 @@ public abstract class Control {
         return enabled = !enabled;
     }
 
+    public int getX(){
+        return x;
+    }
+    
+    public void setX(int value){
+        this.x = value;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public void setY(int value){
+        this.y = value;
+    }
+    
+    public int getWidth(){
+        return width;
+    }
+
+    public void setWidth(int value){
+        this.width= value;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public void setHeight(int value){
+        this.height= value;
+    }
+
+    public int getLeft(){
+        return x;
+    }
+
+    public void setLeft(int value){
+        this.x = value;
+    }
+
+    public int getRight(){
+        return getLeft() + getWidth();
+    }
+
+    public int getTop(){
+        return y;
+    }
+
+    public void setTop(int value){
+        this.y = value;
+    }
+
+    public int getBottom(){
+        return getTop() + getHeight();
+    }
+
     public <K, V> void setTag(K key, V value) {
         if (tags == null) {
             tags = new HashMap<>();
@@ -276,15 +332,15 @@ public abstract class Control {
     }
 
     public boolean load() {
-        return loaded = executeEventChain(EventPreset.LOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = executeEventChain(EventPreset.LOAD, new EventArguments(EventPreset.LOAD), Control::nonNull, true);
     }
 
     public boolean unload() {
-        return loaded = !executeEventChain(EventPreset.UNLOAD, new EventArguments(), Control::nonNull, true);
+        return loaded = !executeEventChain(EventPreset.UNLOAD, new EventArguments(EventPreset.UNLOAD), Control::nonNull, true);
     }
 
     public boolean update(boolean updateChilds) {
-        return executeEventChain(EventPreset.UPDATE, new EventArguments(), Control::nonNull, updateChilds);
+        return executeEventChain(EventPreset.UPDATE, new EventArguments(EventPreset.UPDATE), Control::nonNull, updateChilds);
     }
 
     public boolean render(Context context) {
@@ -292,7 +348,7 @@ public abstract class Control {
             return false;
         }
 
-        RenderEventArguments arguments = new RenderEventArguments(context.getRootElement(), context.getRenderProvider());
+        RenderEventArguments arguments = new RenderEventArguments(EventPreset.RENDER, context.getRootElement(), context.getRenderProvider());
 
         return executeEventChain(EventPreset.RENDER, arguments, Control::nonNull, true);
     }

@@ -5,15 +5,38 @@ import jforms.render.MouseCursor;
 import jforms.render.RenderProvider;
 import jforms.render.ShapeType;
 import jforms.render.ViewPort;
+import jforms.util.vector.Vector2T;
 
 public class ProviderOpenGL extends RenderProvider {
+    public static class FontClass extends Font {
+        public FontClass(String filePath){
+            super(filePath);
+        }
+
+        @Override
+        public int getTextWidth(String text){
+            return 0;
+        }
+
+        @Override
+        public int getTextHeight(String text){
+            return 0;
+        }
+    
+        @Override
+        public Vector2T<Integer> getTextSize(String text){
+            return new Vector2T<Integer>(0, 0);
+        }
+    }
 
     protected ProviderOpenGL(Font defaultFont) {
         super(defaultFont);
     }
 
     public static ProviderOpenGL initialize(String defaultFont) {
-        return new ProviderOpenGL(new Font(defaultFont));
+        Font font = new FontClass(defaultFont);
+
+        return new ProviderOpenGL(font);
     }
 
     @Override
@@ -52,12 +75,7 @@ public class ProviderOpenGL extends RenderProvider {
     }
 
     @Override
-    public boolean renderShapeFilled(int x, int y, int z, int width, int height, int color) {
-        return false; //todo
-    }
-
-    @Override
-    public boolean renderShapeBorder(int x, int y, int z, int width, int height, int color) {
+    public boolean renderShape(int x, int y, int z, int width, int height, int color, float rounding, boolean fill) {
         return false; //todo
     }
 

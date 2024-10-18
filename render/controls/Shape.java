@@ -48,11 +48,11 @@ public class Shape extends Control {
         provider.pushShapeType(element.type, true);
 
         if (element.bodyColor != null) {
-            provider.renderShapeFilled(element.x, element.y, element.z, element.width, element.height, element.bodyColor.getValue());
+            provider.renderShape(element.x, element.y, element.z, element.width, element.height, element.bodyColor.getValue(), element.rounding, true);
         }
 
         if (element.borderColor != null) {
-            provider.renderShapeBorder(element.x, element.y, element.z, element.width, element.height, element.borderColor.getValue());
+            provider.renderShape(element.x, element.y, element.z, element.width, element.height, element.borderColor.getValue(), element.rounding, false);
         }
 
         provider.popRotation(true);

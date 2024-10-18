@@ -1,10 +1,22 @@
 package jforms.render;
 
-public class Font {
+import jforms.util.vector.Vector2T;
 
-    protected String fontFilePath;
+public abstract class Font {
 
-    public Font(String fontFilePath) {
-        this.fontFilePath = fontFilePath;
+    protected String filePath;
+
+    public Font(String filePath) {
+        this.filePath = filePath;
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public abstract int getTextWidth(String text);
+
+    public abstract int getTextHeight(String text);
+
+    public abstract Vector2T<Integer> getTextSize(String text);
 }
