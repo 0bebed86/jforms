@@ -1,12 +1,12 @@
-package jgui.render.controls;
+package jforms.render.controls;
 
-import jgui.event.EventArguments;
-import jgui.event.EventPreset;
-import jgui.event.arguments.RenderEventArguments;
-import jgui.render.ColorRGBA;
-import jgui.render.Control;
-import jgui.render.RenderProvider;
-import jgui.render.ShapeType;
+import jforms.event.EventArguments;
+import jforms.event.EventPreset;
+import jforms.event.arguments.RenderEventArguments;
+import jforms.render.ColorRGBA;
+import jforms.render.Control;
+import jforms.render.RenderProvider;
+import jforms.render.ShapeType;
 
 public class Image extends Shape {
 

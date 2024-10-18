@@ -1,12 +1,13 @@
-package jgui.example.forms;
+package jforms.example.forms;
 
-import jgui.event.*;
-import jgui.event.arguments.*;
-import jgui.render.*;
-import jgui.render.controls.*;
+import jforms.event.*;
+import jforms.event.arguments.*;
+import jforms.render.*;
+import jforms.render.controls.*;
 
-//create form class extends jgui.render.controls.Form
+//create form class extends jforms.render.controls.Form
 public class SampleForm extends Form {
+
     //define needed constants
     protected static final ColorRGBA borderColor = null;
     protected static final ColorRGBA backgroundColor = new ColorRGBA(java.awt.Color.darkGray);

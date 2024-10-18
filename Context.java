@@ -1,4 +1,4 @@
-package jgui;
+package jforms;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Queue;
-import jgui.event.EventArguments;
-import jgui.event.EventFactory;
-import jgui.event.EventPreset;
-import jgui.event.IEventCallback;
-import jgui.event.IEventValidator;
-import jgui.render.Control;
-import jgui.render.RenderProvider;
+import jforms.event.EventArguments;
+import jforms.event.EventFactory;
+import jforms.event.EventPreset;
+import jforms.event.IEventCallback;
+import jforms.event.IEventValidator;
+import jforms.render.Control;
+import jforms.render.RenderProvider;
 
 public class Context {
 

@@ -1,12 +1,12 @@
-package jgui.render.controls;
+package jforms.render.controls;
 
-import jgui.event.EventArguments;
-import jgui.event.EventPreset;
-import jgui.event.IEventCallback;
-import jgui.event.arguments.MouseEventArguments;
-import jgui.render.ColorRGBA;
-import jgui.render.Control;
-import jgui.render.ShapeType;
+import jforms.event.EventArguments;
+import jforms.event.EventPreset;
+import jforms.event.IEventCallback;
+import jforms.event.arguments.MouseEventArguments;
+import jforms.render.ColorRGBA;
+import jforms.render.Control;
+import jforms.render.ShapeType;
 
 public class Slider<T> extends Canvas {
 

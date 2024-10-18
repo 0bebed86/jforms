@@ -1,4 +1,4 @@
-package jgui.render;
+package jforms.render;
 
 public enum ShapeType {
     TRIANGLE(0), QUAD(1);

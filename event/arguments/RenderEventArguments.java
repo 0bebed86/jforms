@@ -1,8 +1,8 @@
-package jgui.event.arguments;
+package jforms.event.arguments;
 
-import jgui.event.EventArguments;
-import jgui.render.Control;
-import jgui.render.RenderProvider;
+import jforms.event.EventArguments;
+import jforms.render.Control;
+import jforms.render.RenderProvider;
 
 public class RenderEventArguments extends EventArguments {
 

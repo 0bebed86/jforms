@@ -1,9 +1,9 @@
-package jgui.render.controls;
+package jforms.render.controls;
 
-import jgui.render.ColorRGBA;
-import jgui.render.Font;
-import jgui.render.ShapeType;
-import jgui.event.IEventCallback;
+import jforms.render.ColorRGBA;
+import jforms.render.Font;
+import jforms.render.ShapeType;
+import jforms.event.IEventCallback;
 
 public class PlainText extends Canvas {
 

@@ -1,10 +1,10 @@
-package jgui.render.providers;
+package jforms.render.providers;
 
-import jgui.render.Font;
-import jgui.render.MouseCursor;
-import jgui.render.RenderProvider;
-import jgui.render.ShapeType;
-import jgui.render.ViewPort;
+import jforms.render.Font;
+import jforms.render.MouseCursor;
+import jforms.render.RenderProvider;
+import jforms.render.ShapeType;
+import jforms.render.ViewPort;
 
 public class ProviderOpenGL extends RenderProvider {
 
@@ -27,7 +27,7 @@ public class ProviderOpenGL extends RenderProvider {
     }
 
     @Override
-    protected boolean applyViewPort(ViewPort viewPort){
+    protected boolean applyViewPort(ViewPort viewPort) {
         return false; //todo
     }
 

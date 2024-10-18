@@ -1,10 +1,10 @@
-package jgui.render.controls;
+package jforms.render.controls;
 
 import java.util.List;
-import jgui.event.IEventCallback;
-import jgui.render.ColorRGBA;
-import jgui.render.Font;
-import jgui.render.ShapeType;
+import jforms.event.IEventCallback;
+import jforms.render.ColorRGBA;
+import jforms.render.Font;
+import jforms.render.ShapeType;
 
 public class Button extends PlainText {
 

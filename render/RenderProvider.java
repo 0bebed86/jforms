@@ -1,6 +1,6 @@
-package jgui.render;
+package jforms.render;
 
-import jgui.util.IApplier;
+import jforms.util.IApplier;
 
 public abstract class RenderProvider {
 
@@ -101,14 +101,14 @@ public abstract class RenderProvider {
         return viewPortStack.get(null);
     }
 
-    public ViewPort getViewPortAbsolute(){
-        if(viewPortStack.isEmpty()){
+    public ViewPort getViewPortAbsolute() {
+        if (viewPortStack.isEmpty()) {
             return null;
         }
 
         ViewPort result = new ViewPort();
 
-        for(ViewPort current : viewPortStack){
+        for (ViewPort current : viewPortStack) {
             result.merge(current, false);
         }
 

@@ -1,4 +1,4 @@
-package jgui.render;
+package jforms.render;
 
 public enum StyleVariable {
     BORDER_COLOR, BACKGROUND_COLOR, BACKGROUND_TEXTURE, FONT, COLOR, ROUNDING;

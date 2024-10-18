@@ -1,7 +1,8 @@
-package jgui.event;
+package jforms.event;
 
-import jgui.render.Control;
+import jforms.render.Control;
 
 public interface IEventCallback {
+
     public Object invoke(Control sender, EventArguments arguments);
 }

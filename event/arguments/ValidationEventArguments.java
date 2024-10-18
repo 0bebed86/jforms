@@ -1,8 +1,9 @@
-package jgui.event.arguments;
+package jforms.event.arguments;
 
-import jgui.event.EventArguments;
+import jforms.event.EventArguments;
 
-public class ValidationEventArguments extends EventArguments{
+public class ValidationEventArguments extends EventArguments {
+
     protected String event;
 
     public ValidationEventArguments(String event) {

@@ -1,4 +1,4 @@
-package jgui.render;
+package jforms.render;
 
 public class ColorRGBA {
 
@@ -11,15 +11,15 @@ public class ColorRGBA {
 
     protected int value;
 
-    public ColorRGBA(){
+    public ColorRGBA() {
         this.value = 0;
     }
 
-    public ColorRGBA(int value){
+    public ColorRGBA(int value) {
         this.value = value;
     }
 
-    public ColorRGBA(java.awt.Color color){
+    public ColorRGBA(java.awt.Color color) {
         this.value = color.getRGB();
     }
 

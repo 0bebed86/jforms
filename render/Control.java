@@ -1,4 +1,4 @@
-package jgui.render;
+package jforms.render;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import jgui.Context;
-import jgui.event.EventArguments;
-import jgui.event.EventPreset;
-import jgui.event.IEventCallback;
-import jgui.event.IEventValidator;
-import jgui.event.arguments.RenderEventArguments;
-import jgui.event.arguments.ValidationEventArguments;
+import jforms.Context;
+import jforms.event.EventArguments;
+import jforms.event.EventPreset;
+import jforms.event.IEventCallback;
+import jforms.event.IEventValidator;
+import jforms.event.arguments.RenderEventArguments;
+import jforms.event.arguments.ValidationEventArguments;
 
 public abstract class Control {
 
@@ -246,7 +246,7 @@ public abstract class Control {
 
     public EventArguments validate(String event, IEventValidator validator, Predicate<Object> checker, int depth) {
         ValidationEventArguments validationArguments = new ValidationEventArguments(event);
-        
+
         executeEvent(EventPreset.EVENT_VALIDATE, this, validationArguments);
 
         if (validationArguments.isAbort()) {

@@ -1,4 +1,4 @@
-package jgui.util;
+package jforms.util;
 
 public enum PositionAlignment {
     NONE(0.0f), LEFT(-1.0f), MIDDLE(-0.5f), RIGHT(1.0f);

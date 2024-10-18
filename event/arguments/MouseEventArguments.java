@@ -1,7 +1,7 @@
-package jgui.event.arguments;
+package jforms.event.arguments;
 
-import jgui.MouseButton;
-import jgui.event.EventArguments;
+import jforms.MouseButton;
+import jforms.event.EventArguments;
 
 public class MouseEventArguments extends EventArguments {
 

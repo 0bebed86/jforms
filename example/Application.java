@@ -1,38 +1,39 @@
-package jgui.example;
+package jforms.example;
 
-import jgui.Context;
-import jgui.event.*;
-import jgui.example.forms.*;
-import jgui.render.*;
+import jforms.Context;
+import jforms.event.*;
+import jforms.example.forms.*;
+import jforms.render.*;
 
 public class Application {
+
     public static void main(String[] args) {
-        Context jguiContext = new Context(null); //well you can create it by yourself how you need
+        Context jformsContext = new Context(null); //well you can create it by yourself how you need
 
         //any font initialization | now it just gets it from context render provider
-        Font currentFont = jguiContext.getRenderProvider().getFont();
+        Font currentFont = jformsContext.getRenderProvider().getFont();
 
         //create form instance
         SampleForm sampleForm = new SampleForm(null, 0, 0, 600, 400, currentFont);
 
         //register form with all childs as root
-        jguiContext.registerElement(sampleForm, true, true);
-        
+        jformsContext.registerElement(sampleForm, true, true);
+
         //sample example your render loop or something idk :P
         boolean active = false; //ok imagine it is true or a complex condition idgf :\
-        while(active){
+        while (active) {
             //render all visible controls
-            jguiContext.render();
+            jformsContext.render();
         }
 
         //sample your event validation loop
-        while(active){
+        while (active) {
             //validate and execute happens events
-            jguiContext.validate(EventPreset.MOUSE_CLICK, Application::mouseClickValidator, true);
+            jformsContext.validate(EventPreset.MOUSE_CLICK, Application::mouseClickValidator, true);
         }
     }
 
-    protected static EventArguments mouseClickValidator(Control control, String eventName){
+    protected static EventArguments mouseClickValidator(Control control, String eventName) {
         //here you implements your check of mouse click on control
 
         return null;

@@ -1,13 +1,14 @@
-package jgui.render;
+package jforms.render;
 
 public class ViewPort {
+
     protected int left, top, right, bottom, width, height;
 
-    public ViewPort(){
+    public ViewPort() {
         return;
     }
 
-    protected ViewPort(int left, int top, int right, int bottom, int width, int height){
+    protected ViewPort(int left, int top, int right, int bottom, int width, int height) {
         this.left = left;
         this.top = top;
         this.right = right;
@@ -16,7 +17,7 @@ public class ViewPort {
         this.height = height;
     }
 
-    public ViewPort(int left, int top, int right, int bottom){
+    public ViewPort(int left, int top, int right, int bottom) {
         this.left = left;
         this.top = top;
         this.right = right;
@@ -25,43 +26,43 @@ public class ViewPort {
         this.height = bottom - top;
     }
 
-    public ViewPort(ViewPort source){
+    public ViewPort(ViewPort source) {
         this(source.left, source.top, source.right, source.bottom, source.width, source.height);
     }
 
-    public int getLeft(){
+    public int getLeft() {
         return left;
     }
 
-    public int getRight(){
+    public int getRight() {
         return right;
     }
 
-    public int getTop(){
+    public int getTop() {
         return top;
     }
 
-    public int getBottom(){
+    public int getBottom() {
         return bottom;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return width;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 
-    public int getX(){
+    public int getX() {
         return left;
     }
 
-    public int getY(){
+    public int getY() {
         return top;
     }
 
-    public ViewPort merge(ViewPort another, boolean clone){
+    public ViewPort merge(ViewPort another, boolean clone) {
         ViewPort element = clone ? new ViewPort(this) : this;
 
         element.left += another.left;

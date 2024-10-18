@@ -1,4 +1,4 @@
-package jgui.event;
+package jforms.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import jgui.render.Control;
+import jforms.render.Control;
 
-public class EventFactory extends HashMap<String, List<? extends Control>>{
+public class EventFactory extends HashMap<String, List<? extends Control>> {
+
     public void registerControl(Control control, boolean registerChilds) {
         Queue<? extends Control> coming = new LinkedList<>();
 
@@ -23,28 +24,28 @@ public class EventFactory extends HashMap<String, List<? extends Control>>{
                 }
 
                 if (!elements.contains(current)) {
-                    ((List)elements).add(current);
+                    ((List) elements).add(current);
                 }
             }
 
-            if(registerChilds){
-                current.getChilds().forEach(c -> ((List)coming).add(c));
+            if (registerChilds) {
+                current.getChilds().forEach(c -> ((List) coming).add(c));
             }
         }
     }
 
-    public void executeEventsChains(String event, EventArguments arguments){
+    public void executeEventsChains(String event, EventArguments arguments) {
         List<? extends Control> elements = super.getOrDefault(event, null);
         if (elements == null) {
             return;
         }
 
-        for(Control element : elements){
+        for (Control element : elements) {
             element.executeEventChain(event, arguments, true);
         }
     }
 
-    public void executeEventsChains(EventPreset event, EventArguments arguments){
+    public void executeEventsChains(EventPreset event, EventArguments arguments) {
         executeEventsChains(event.name(), arguments);
     }
 }
