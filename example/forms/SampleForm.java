@@ -33,7 +33,7 @@ public class SampleForm extends Form {
         this.font = font;
 
         //initialize all controls
-        counterLabel = new PlainText(null, 150 + 150 + 5, 50, 0, -1, -1, null, null, ShapeType.QUAD, null, null, "Unclicked yet", font, textColor);
+        counterLabel = new PlainText(null, 150 + 150 + 5, 50, 0, -1, -1, null, null, ShapeType.QUAD, null, null, "Unclicked yet", font, textColor, 0, 0);
         {
             addChild(counterLabel);
         }
